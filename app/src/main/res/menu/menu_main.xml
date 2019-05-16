@@ -1,0 +1,36 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.shs.vetterhealth.MainActivity">
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/settings"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_sleeptrack"
+        android:orderInCategory="100"
+        android:title="@string/sleeptrack"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_chatbot"
+        android:orderInCategory="100"
+        android:title="@string/chatbot"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_therapy"
+        android:orderInCategory="100"
+        android:title="@string/therapy"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_add"
+        android:icon="@drawable/addicon"
+        app:showAsAction="ifRoom"
+        android:title="@string/add"/>
+    <item
+        android:id="@+id/logout"
+        android:orderInCategory="100"
+        android:title="@string/logout"
+        app:showAsAction="never" />
+
+</menu>
