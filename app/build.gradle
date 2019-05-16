@@ -48,8 +48,8 @@ dependencies {
 
 
     // therapy
-    compile 'ai.api:libai:1.6.11'
-    compile 'ai.api:sdk:2.0.5@aar'
+    implementation 'ai.api:libai:1.6.11'
+    implementation 'ai.api:sdk:2.0.5@aar'
     // api.ai SDK dependencies
     implementation 'com.google.code.gson:gson:2.8.1'
     implementation 'com.google.firebase:firebase-database:9.2.0'
@@ -63,7 +63,7 @@ dependencies {
 
     ///
     // api.ai SDK dependencies
-    compile 'com.firebase:firebase-client-android:2.3.1'
+    implementation 'com.firebase:firebase-client-android:2.3.1'
 
 
 }
