@@ -28,11 +28,6 @@
             android:layout_height="wrap_content"
             android:textSize="30dp"/>
         <TextView
-            android:id="@+id/text_branch_avg_score"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="30dp"/>
-        <TextView
             android:id="@+id/text_avg_score"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

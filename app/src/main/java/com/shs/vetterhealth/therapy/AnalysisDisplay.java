@@ -75,8 +75,8 @@ public class AnalysisDisplay extends AppCompatActivity {
                 avgb = ((float)(sumb))/countb;
                 displayScore = calcScore(avg);
 
-                t1.setText(String.valueOf(calcScore(Integer.parseInt(baseScore))));
-                t3.setText(String.valueOf(calcScore(displayScore)));
+                t1.setText("Your score: " + String.valueOf(calcScore(Integer.parseInt(baseScore))));
+                t3.setText("Average user score: " + String.valueOf(calcScore(displayScore)));
 
             }
 
