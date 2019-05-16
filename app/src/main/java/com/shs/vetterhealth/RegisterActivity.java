@@ -18,7 +18,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.shs.vetterhealth.R;
+import com.shs.vetterhealth.therapy.TherapyUser;
 
 public class RegisterActivity extends AppCompatActivity {
     private Button registerBtn;
@@ -55,11 +55,16 @@ public class RegisterActivity extends AppCompatActivity {
                     mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
+
+                            // CAROLINA HERE
                             String user_id = mAuth.getCurrentUser().getUid();
                             DatabaseReference current_user_db = mDatabase.child(user_id);
                             current_user_db.child("Username").setValue(username);
                             current_user_db.child("Image").setValue("Default");
                             Toast.makeText(RegisterActivity.this, "Registeration Succesful", Toast.LENGTH_SHORT).show();
+                            // CAROLINA HERE
+                            addTherapyMember(user_id, username, email);
+
                             Intent regIntent = new Intent(RegisterActivity.this, ProfileActivity.class);
                             regIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(regIntent);
@@ -71,5 +76,17 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    protected void addTherapyMember(String userid, String username, String email){
+        String number="0";
+        DatabaseReference mTherapyUsers = FirebaseDatabase.getInstance().getReference().child("TherapyUsers");
+
+        //creating the therapyUser object
+        TherapyUser therapyUser = new TherapyUser(userid,username,email,number);
+
+        //Saving therapyUser
+        mTherapyUsers.child(userid).setValue(therapyUser);
+        Toast.makeText(this,"Therapy Member Added in database!", Toast.LENGTH_LONG).show();
     }
 }

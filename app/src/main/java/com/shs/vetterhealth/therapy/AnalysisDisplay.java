@@ -23,8 +23,8 @@ public class AnalysisDisplay extends AppCompatActivity {
     static int sumb=0,countb=0,displayScoreb=0;
     static float avg,avgb;
     //get these values from previous activity
-    static String baseScore,baseEmail,baseBranch="min";
-    DatabaseReference databaseStudents;
+    static String baseScore,baseEmail;
+    DatabaseReference mTherapyUsers;
     TextView t1,t2,t3;
 
 
@@ -43,23 +43,22 @@ public class AnalysisDisplay extends AppCompatActivity {
         super.onStart();
 
         t1 = (TextView)findViewById(R.id.text_user_score);
-        t2 = (TextView)findViewById(R.id.text_branch_avg_score);
         t3 = (TextView)findViewById(R.id.text_avg_score);
 
-        databaseStudents = FirebaseDatabase.getInstance().getReference("students");
-        databaseStudents.addValueEventListener(new ValueEventListener() {
+        this.mTherapyUsers = FirebaseDatabase.getInstance().getReference().child("TherapyUsers");
+        this.mTherapyUsers.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //studentList.clear();
+                //therapyUserList.clear();
                 sum=0;count=0;
-                for(DataSnapshot studentSnapshot : dataSnapshot.getChildren()){
-                    Student student = studentSnapshot.getValue(Student.class);
-                    //studentList.add(student);
-                    int cscore = Integer.parseInt(student.getStudentScore());
+                for(DataSnapshot therapyUserSnapshot : dataSnapshot.getChildren()){
+                    TherapyUser therapyUser = therapyUserSnapshot.getValue(TherapyUser.class);
+                    //therapyUserList.add(therapyUser);
+                    int cscore = Integer.parseInt(therapyUser.getTherapyUserScore());
 
-                    //if mailid from base class matches then update this student:
-                    if(student.getStudentMailId().equals(baseEmail)){
-                        updateScore(student.getStudentId(),student.getStudentName(),baseEmail,baseScore,baseBranch);
+                    //if mailid from base class matches then update this therapyUser:
+                    if(therapyUser.getTherapyUserMailId().equals(baseEmail)){
+                        updateScore(therapyUser.getTherapyUserId(), therapyUser.getTherapyUserName(),baseEmail, baseScore);
                         cscore = Integer.parseInt(baseScore);
                     }
 
@@ -67,23 +66,16 @@ public class AnalysisDisplay extends AppCompatActivity {
                         continue;
                     sum  = sum + cscore;
                     count++;
-                    if(student.getStudentBranch().equals(baseBranch)){
-                        sumb = sumb + cscore;
-                        countb++;
-                    }
-
                 }
-                //StudentList adapter = new StudentList(MainActivity.this, studentList);
-                //listViewStudents.setAdapter(adapter);
+                //TherapyUserList adapter = new TherapyUserList(MainActivity.this, therapyUserList);
+                //listViewTherapyUsers.setAdapter(adapter);
                 //calculating average
 
                 avg = ((float)(sum))/count;
                 avgb = ((float)(sumb))/countb;
                 displayScore = calcScore(avg);
-                displayScoreb = calcScore(avgb);
 
                 t1.setText(String.valueOf(calcScore(Integer.parseInt(baseScore))));
-                t2.setText(String.valueOf(displayScoreb));
                 t3.setText(String.valueOf(calcScore(displayScore)));
 
             }
@@ -95,11 +87,11 @@ public class AnalysisDisplay extends AppCompatActivity {
         });
     }
 
-    private void updateScore(String id, String name, String mail, String score, String branch){
+    private void updateScore(String id, String name, String mail, String score){
 
-        DatabaseReference dr = FirebaseDatabase.getInstance().getReference("students").child(id);
-        Student student = new Student(id,name,mail,score,branch);
-        dr.setValue(student);
+        DatabaseReference mTherapyUsers = FirebaseDatabase.getInstance().getReference().child("TherapyUsers").child(id);
+        TherapyUser therapyUser = new TherapyUser(id,name,mail,score);
+        mTherapyUsers.setValue(therapyUser);
         Toast.makeText(this,"Score Recorded Successfully", Toast.LENGTH_LONG).show();
 
     }

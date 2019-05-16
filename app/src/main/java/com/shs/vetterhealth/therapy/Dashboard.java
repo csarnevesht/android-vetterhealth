@@ -57,7 +57,7 @@ public class Dashboard extends AppCompatActivity {
         //Get the bundle
         Bundle bundle = getIntent().getExtras();
         //Extract the data…
-//        String studentEmail = bundle.getString("passinfo");
+//        String therapyUserEmail = bundle.getString("passinfo");
 
         qRef.addValueEventListener(new ValueEventListener() {
             @Override

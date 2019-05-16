@@ -33,11 +33,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
 
-    DatabaseReference databaseStudents;
+    DatabaseReference mTherapyUsers;
 
-    //ListView listViewStudents;
+    //ListView listViewTherapyUsers;
 
-    List<Student> studentList;
+    List<TherapyUser> therapyUserList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +52,10 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
         editTextBranch = (EditText)findViewById(R.id.editTextBranch);
         editTextName = (EditText)findViewById(R.id.editTextName);
         textViewLogIn = (TextView)findViewById(R.id.textViewLogIn);
-        databaseStudents = FirebaseDatabase.getInstance().getReference("students");
-        //listViewStudents = (ListView) findViewById(R.id.listViewStudents);
-        studentList = new ArrayList<>();
+
+        mTherapyUsers = FirebaseDatabase.getInstance().getReference().child("TherapyUsers");
+        //listViewTherapyUsers = (ListView) findViewById(R.id.listViewTherapyUsers);
+        therapyUserList = new ArrayList<>();
 
         buttonSignUp.setOnClickListener(this);
         textViewLogIn.setOnClickListener(this);
@@ -93,10 +94,9 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
     }
 
 
-    protected void addStudent(){
+    protected void addTherapyMember(){
         String name = editTextName.getText().toString().trim();
         String mailId = editTextEmail.getText().toString().trim();
-        String branch = editTextBranch.getText().toString().trim();
         //String number = editTextScore.getText().toString().trim();
         String number="0";
         //float no=0;
@@ -105,18 +105,18 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
 
 
         if(!TextUtils.isEmpty(name)){   //not empty store it in database.
-            String id = databaseStudents.push().getKey();
+            String id = mTherapyUsers.push().getKey();
 
-            //creating the student object
-            Student student = new Student(id,name,mailId,number,branch);
+            //creating the therapyUser object
+            TherapyUser therapyUser = new TherapyUser(id,name,mailId,number);
 
-            //Saving student
-            databaseStudents.child(id).setValue(student);
+            //Saving therapyUser
+            mTherapyUsers.child(id).setValue(therapyUser);
 
             //setting edittext to blank again
             editTextName.setText("");
 
-            Toast.makeText(this,"Student Added in database!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"Therapy Member Added in database!", Toast.LENGTH_LONG).show();
         }
         else{
             Toast.makeText(this, "You should enter a name", Toast.LENGTH_SHORT).show();
@@ -127,7 +127,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
     public void onClick(View v) {
         if(v == buttonSignUp){
             registerUser();
-            addStudent();
+            addTherapyMember();
         }
         if(v == textViewLogIn){
             finish();
