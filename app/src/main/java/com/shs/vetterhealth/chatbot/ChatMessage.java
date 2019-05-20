@@ -1,9 +1,6 @@
 package com.shs.vetterhealth.chatbot;
 
 
-/**
- * Created by Abhishek on 17/4/18.
- */
 
 public class ChatMessage {
 

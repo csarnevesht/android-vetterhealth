@@ -8,6 +8,11 @@
         android:title="@string/settings"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_blog"
+        android:orderInCategory="100"
+        android:title="Blog"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_sleeptrack"
         android:orderInCategory="100"
         android:title="@string/sleeptrack"

@@ -1,4 +1,10 @@
 package com.shs.vetterhealth.therapy;
+
+import android.widget.Toast;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class TherapyUser {
     String therapyUserName;
     String therapyUserId;
@@ -26,4 +32,5 @@ public class TherapyUser {
     public String getTherapyUserScore(){
         return therapyUserScore;
     }
+
 }

@@ -62,7 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
                             current_user_db.child("Username").setValue(username);
                             current_user_db.child("Image").setValue("Default");
                             Toast.makeText(RegisterActivity.this, "Registeration Succesful", Toast.LENGTH_SHORT).show();
-                            // CAROLINA HERE
+//                            // CAROLINA HERE
                             addTherapyMember(user_id, username, email);
 
                             Intent regIntent = new Intent(RegisterActivity.this, ProfileActivity.class);
@@ -87,6 +87,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         //Saving therapyUser
         mTherapyUsers.child(userid).setValue(therapyUser);
-        Toast.makeText(this,"Therapy Member Added in database!", Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"VetterHealth Member Added in database!", Toast.LENGTH_LONG).show();
     }
 }

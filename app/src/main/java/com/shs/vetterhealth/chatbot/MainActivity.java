@@ -23,6 +23,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.shs.vetterhealth.R;
@@ -41,7 +43,9 @@ public class MainActivity extends AppCompatActivity implements AIListener {
     RecyclerView recyclerView;
     EditText editText;
     RelativeLayout addBtn;
-    DatabaseReference mDataBaseReference;
+    DatabaseReference mDataBaseRef;
+    private FirebaseAuth mAuth;
+    private FirebaseUser mCurrentUser;
     FirebaseRecyclerAdapter<ChatMessage, chat_rec> adapter;
     Boolean flagFab = true;
 
@@ -61,8 +65,12 @@ public class MainActivity extends AppCompatActivity implements AIListener {
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        mDataBaseReference = FirebaseDatabase.getInstance().getReference();
-        mDataBaseReference.keepSynced(true);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        ref.keepSynced(true);
+        mAuth = FirebaseAuth.getInstance();
+        mCurrentUser = mAuth.getCurrentUser();
+        final DatabaseReference newChatSession = ref.child("chat");
+        mDataBaseRef = newChatSession.child(mCurrentUser.getUid());
 
         final AIConfiguration config = new AIConfiguration("09010a00bbbf40bebfd50f0bad426e58",
                 AIConfiguration.SupportedLanguages.English,
@@ -86,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements AIListener {
                 if (!message.equals("")) {
 
                     ChatMessage chatMessage = new ChatMessage(message, "user");
-                    mDataBaseReference.child("chat").push().setValue(chatMessage);
+                    mDataBaseRef.child("chat").push().setValue(chatMessage);
 
                     aiRequest.setQuery(message);
                     new AsyncTask<AIRequest, Void, AIResponse>() {
@@ -110,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements AIListener {
                                 Result result = response.getResult();
                                 String reply = result.getFulfillment().getSpeech();
                                 ChatMessage chatMessage = new ChatMessage(reply, "bot");
-                                mDataBaseReference.child("chat").push().setValue(chatMessage);
+                                mDataBaseRef.child("chat").push().setValue(chatMessage);
                             }
                         }
                     }.execute(aiRequest);
@@ -156,7 +164,11 @@ public class MainActivity extends AppCompatActivity implements AIListener {
             }
         });
 
-        adapter = new FirebaseRecyclerAdapter<ChatMessage, chat_rec>(ChatMessage.class, R.layout.chatbot_msglist, chat_rec.class, mDataBaseReference.child("chat")) {
+        adapter = new FirebaseRecyclerAdapter<ChatMessage, chat_rec>(
+                ChatMessage.class,
+                R.layout.chatbot_msglist,
+                chat_rec.class,
+                mDataBaseRef.child("chat")) {
             @Override
             protected void populateViewHolder(chat_rec viewHolder, ChatMessage model, int position) {
 
@@ -246,11 +258,11 @@ public class MainActivity extends AppCompatActivity implements AIListener {
 
         String message = result.getResolvedQuery();
         ChatMessage chatMessage0 = new ChatMessage(message, "user");
-        mDataBaseReference.child("chat").push().setValue(chatMessage0);
+        mDataBaseRef.child("chat").push().setValue(chatMessage0);
 
         String reply = result.getFulfillment().getSpeech();
         ChatMessage chatMessage = new ChatMessage(reply, "bot");
-        mDataBaseReference.child("chat").push().setValue(chatMessage);
+        mDataBaseRef.child("chat").push().setValue(chatMessage);
 
     }
 

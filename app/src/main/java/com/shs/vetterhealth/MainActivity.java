@@ -38,13 +38,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.blog_activity_main);
         toolbar = findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menu_main);
-
         setSupportActionBar(toolbar);
 
-        //initialize recyclerview and FIrebase objects
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(true);
         mDatabase = FirebaseDatabase.getInstance().getReference().child("BlogPost");
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -63,60 +58,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
-        FirebaseRecyclerAdapter<BlogPost, BlogzoneViewHolder> FBRA = new FirebaseRecyclerAdapter<BlogPost, BlogzoneViewHolder>(
-                BlogPost.class,
-                R.layout.blog_card_items,
-                BlogzoneViewHolder.class,
-                mDatabase
-        ) {
-            @Override
-            protected void populateViewHolder(BlogzoneViewHolder viewHolder, BlogPost model, int position) {
-                final String post_key = getRef(position).getKey().toString();
-                viewHolder.setTitle(model.getTitle());
-                viewHolder.setDesc(model.getDesc());
-                viewHolder.setImageUrl(getApplicationContext(), model.getImageUrl());
-                viewHolder.setUserName(model.getUsername());
-                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent singleActivity = new Intent(MainActivity.this, SinglePostActivity.class);
-                        singleActivity.putExtra("PostID", post_key);
-                        startActivity(singleActivity);
-                    }
-                });
-            }
-        };
-        recyclerView.setAdapter(FBRA);
+
     }
 
-    public static class BlogzoneViewHolder extends RecyclerView.ViewHolder {
-        View mView;
-
-        public BlogzoneViewHolder(View itemView) {
-            super(itemView);
-            mView = itemView;
-        }
-
-        public void setTitle(String title) {
-            TextView post_title = mView.findViewById(R.id.post_title_txtview);
-            post_title.setText(title);
-        }
-
-        public void setDesc(String desc) {
-            TextView post_desc = mView.findViewById(R.id.post_desc_txtview);
-            post_desc.setText(desc);
-        }
-
-        public void setImageUrl(Context ctx, String imageUrl) {
-            ImageView post_image = mView.findViewById(R.id.post_image);
-            Picasso.with(ctx).load(imageUrl).into(post_image);
-        }
-
-        public void setUserName(String userName) {
-            TextView postUserName = mView.findViewById(R.id.post_user);
-            postUserName.setText(userName);
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -132,23 +76,21 @@ public class MainActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.action_sleeptrack) {
             startActivity(new Intent(MainActivity.this, com.shs.vetterhealth.sleeptracker.MainActivity.class));
+        } else if (id == R.id.action_blog) {
+            startActivity(new Intent(MainActivity.this, com.shs.vetterhealth.blogzone.MainActivity.class));
         } else if (id == R.id.action_chatbot) {
             Intent intent = new Intent(MainActivity.this, com.shs.vetterhealth.chatbot.MainActivity.class);
             startActivity(intent);
         } else if (id == R.id.action_therapy) {
             Intent intent = new Intent(MainActivity.this, com.shs.vetterhealth.therapy.Dashboard.class);
             startActivity(intent);
-
-//            intent.putExtra("key1",email);
-//            startActivity(intent);
-//            startActivity(new Intent(MainActivity.this, com.shs.vetterhealth.therapy.MainActivity.class));
         } else if (id == R.id.action_add) {
             startActivity(new Intent(MainActivity.this, PostActivity.class));
         } else if (id == R.id.logout) {
             mAuth.signOut();
-            Intent logouIntent = new Intent(MainActivity.this, RegisterActivity.class);
-            logouIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(logouIntent);
+            Intent logoutIntent = new Intent(MainActivity.this, RegisterActivity.class);
+            logoutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(logoutIntent);
         }
         return super.onOptionsItemSelected(item);
     }

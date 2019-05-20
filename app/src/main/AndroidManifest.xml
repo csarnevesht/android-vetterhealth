@@ -42,6 +42,8 @@
             android:parentActivityName="com.shs.vetterhealth.MainActivity"/>
         <activity android:name="com.shs.vetterhealth.chatbot.MainActivity"
             android:parentActivityName="com.shs.vetterhealth.MainActivity" />
+        <activity android:name="com.shs.vetterhealth.blogzone.MainActivity"
+            android:parentActivityName="com.shs.vetterhealth.MainActivity" />
 
     </application>
 

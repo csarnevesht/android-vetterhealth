@@ -67,6 +67,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
                 final String name = profUserName.getText().toString().trim();
                 final String userID = mAuth.getCurrentUser().getUid();
+                final String email = mAuth.getCurrentUser().getEmail();
                 if (!TextUtils.isEmpty(name) && mImageUri != null){
 
                     StorageReference filepath = mStorageRef.child(mImageUri.getLastPathSegment());
